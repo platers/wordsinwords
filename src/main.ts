@@ -2,7 +2,6 @@ import "./style.css";
 import characterMatrices from "../character_matrices.json";
 import {
   interpolateFramesRandomFlip,
-  interpolateFramesRandomMap,
   interpolateFramesApproximateOT,
 } from "./interpolations";
 
@@ -52,7 +51,6 @@ class Display {
   private textColor: string;
   private currentWord: Word | null = null;
   private fontSize: number;
-  private toolbarOptions: string[];
   private toolbarElement: HTMLElement | null = null;
   private autoplayInterval: number | null = null;
   private autoplayLink: HTMLElement | null = null;
@@ -63,7 +61,6 @@ class Display {
     this.container = this.createContainer();
     [this.rows, this.cols] = this.computeGridSize();
     this.grid = [];
-    this.toolbarOptions = ["Randomize Color", "Start Autoplay"];
     this.initializeGrid();
   }
 
