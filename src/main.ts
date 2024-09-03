@@ -180,6 +180,10 @@ class Display {
           '<a href="#" id="autoplayLink" style="color: inherit; text-decoration: none;">' +
             (this.autoplayInterval ? "Stop Autoplay" : "Start Autoplay") +
             "</a>"
+        )
+        .replace(
+          /GitHub/g,
+          '<a href="https://github.com/platers/wordsinwords" target="_blank" style="color: inherit; text-decoration: none;">GitHub</a>'
         );
 
       const randomizeColorLink = document.getElementById("randomizeColorLink");
@@ -233,7 +237,7 @@ class Display {
     const autoplayText = this.autoplayInterval
       ? "Stop Autoplay"
       : "Start Autoplay";
-    const toolbarText = `Randomize Color | ${autoplayText}`;
+    const toolbarText = `Randomize Color | ${autoplayText} | GitHub`;
     const padding = " ".repeat(
       Math.floor((this.cols - toolbarText.length) / 2)
     );
