@@ -62,6 +62,7 @@ class Display {
     [this.rows, this.cols] = this.computeGridSize();
     this.grid = [];
     this.initializeGrid();
+    this.startAutoplay(); // Start autoplay by default
   }
 
   private calculateFontSize(): number {
@@ -273,26 +274,36 @@ class Display {
 
   toggleAutoplay(): void {
     if (this.autoplayInterval) {
+      this.stopAutoplay();
+    } else {
+      this.startAutoplay();
+    }
+  }
+
+  startAutoplay(): void {
+    this.autoplayInterval = setInterval(() => {
+      if (this.currentWord && this.currentWord.related_words.length > 0) {
+        const randomWord =
+          this.currentWord.related_words[
+            Math.floor(Math.random() * this.currentWord.related_words.length)
+          ];
+        window.location.hash = randomWord;
+      }
+    }, 5000);
+    if (this.autoplayLink) {
+      this.autoplayLink.textContent = "Stop Autoplay";
+    }
+    console.log("Autoplay started");
+  }
+
+  stopAutoplay(): void {
+    if (this.autoplayInterval) {
       clearInterval(this.autoplayInterval);
       this.autoplayInterval = null;
       if (this.autoplayLink) {
         this.autoplayLink.textContent = "Start Autoplay";
       }
       console.log("Autoplay stopped");
-    } else {
-      this.autoplayInterval = setInterval(() => {
-        if (this.currentWord && this.currentWord.related_words.length > 0) {
-          const randomWord =
-            this.currentWord.related_words[
-              Math.floor(Math.random() * this.currentWord.related_words.length)
-            ];
-          window.location.hash = randomWord;
-        }
-      }, 5000);
-      if (this.autoplayLink) {
-        this.autoplayLink.textContent = "Stop Autoplay";
-      }
-      console.log("Autoplay started");
     }
   }
 }
