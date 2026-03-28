@@ -270,6 +270,14 @@ class Display {
     this.currentWord = word;
   }
 
+  resize(): void {
+    this.fontSize = this.calculateFontSize();
+    this.container.style.fontSize = `${this.fontSize}px`;
+    [this.rows, this.cols] = this.computeGridSize();
+    this.grid = [];
+    this.initializeGrid();
+  }
+
   randomizeColor(): void {
     [this.backgroundColor, this.textColor] = this.getRandomColors();
     this.container.style.backgroundColor = this.backgroundColor;
@@ -804,6 +812,25 @@ window.addEventListener("hashchange", () => {
 
     eventLoop.addFrames(framesWithToolbar);
   }
+});
+
+// resize handling
+let resizeTimeout: ReturnType<typeof setTimeout> | null = null;
+window.addEventListener("resize", () => {
+  if (resizeTimeout !== null) {
+    clearTimeout(resizeTimeout);
+  }
+  resizeTimeout = window.setTimeout(() => {
+    resizeTimeout = null;
+    // Recalculate font size and grid
+    display.resize();
+    // Re-init the current word
+    const currentWords = getWordsFromHash();
+    const words = currentWords.length > 0 ? currentWords : ["Hello"];
+    isTransitioning = true;
+    const frames = init(words);
+    eventLoop.addFrames(frames);
+  }, 150);
 });
 
 // scroll wheel
